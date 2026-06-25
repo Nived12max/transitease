@@ -1,0 +1,449 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+
+<style>
+
+.ticket{
+    max-width:900px;
+    margin:40px auto;
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.ticket-header{
+    background:#d32f2f;
+    color:white;
+    padding:25px;
+    text-align:center;
+}
+
+.ticket-header h1{
+    margin:0;
+    font-size:32px;
+}
+
+.ticket-header p{
+    margin-top:10px;
+    opacity:.9;
+}
+
+.ticket-body{
+    padding:30px;
+    
+}
+
+.row{
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.box{
+    flex:1;
+    background:#f8fafc;
+    padding:15px;
+    border-radius:12px;
+}
+
+.label{
+    color:#64748b;
+    font-size:14px;
+}
+
+.value{
+    font-size:18px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+.route{
+    text-align:center;
+    margin:30px 0;
+}
+
+.route h2{
+    margin:0;
+}
+
+.route-arrow{
+    font-size:28px;
+    margin:10px 0;
+}
+
+.status{
+    background:#16a34a;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    margin-top:20px;
+}
+
+.qr-box{
+    text-align:center;
+    margin-top:30px;
+}
+
+.qr-box img{
+    width:180px;
+    height:180px;
+    border:2px solid #ddd;
+    border-radius:12px;
+    padding:10px;
+    background:white;
+}
+
+.download-btn{
+    display:block;
+    width:280px;
+    margin:30px auto;
+    text-align:center;
+    background:#2563eb;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.download-btn:hover{
+    background:#1d4ed8;
+}
+
+.footer{
+    text-align:center;
+    color:#666;
+    margin-top:25px;
+    border-top:1px solid #eee;
+    padding-top:20px;
+}
+
+@media(max-width:768px){
+
+    .row{
+        flex-direction:column;
+    }
+
+    .ticket{
+        margin:15px;
+    }
+}
+
+</style>
+
+<div class="ticket">
+
+<div class="ticket-header">
+
+    <h1>🚌 SPONROKO TRAVELS</h1>
+
+    <p>E-Ticket / Booking Confirmation</p>
+
+</div>
+
+<div class="ticket-body">
+
+    <div class="ticket-body">
+
+<div style="
+background:linear-gradient(135deg,#16a34a,#22c55e);
+color:white;
+padding:25px;
+border-radius:15px;
+text-align:center;
+margin-bottom:25px;
+box-shadow:0 10px 25px rgba(34,197,94,.3);
+">
+
+    <div style="
+    font-size:60px;
+    margin-bottom:10px;">
+        ✅
+    </div>
+
+    <h1 style="
+    margin:0;
+    font-size:34px;">
+        PAYMENT SUCCESSFUL
+    </h1>
+
+    <p style="
+    margin-top:10px;
+    font-size:18px;">
+        Your booking has been confirmed successfully.
+    </p>
+
+    <p style="
+    margin-top:10px;
+    font-size:16px;">
+        Booking ID :
+        <b>{{ booking.booking_id }}</b>
+    </p>
+
+</div>
+
+        <div class="box">
+
+            <div class="label">
+                Payment Status
+            </div>
+
+            <div class="value">
+                {{ booking.payment_status }}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="box">
+
+            <div class="label">
+                Passengers
+            </div>
+
+            <div class="value">
+                {{ booking.passenger_name }}
+            </div>
+
+        </div>
+
+        <div class="box">
+
+            <div class="label">
+                Contact Number
+            </div>
+
+            <div class="value">
+                {{ booking.phone }}
+            </div>
+
+        </div>
+
+    </div>
+
+   <div class="route">
+
+    <div style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:50px;
+    flex-wrap:wrap;
+    ">
+
+        <div>
+
+            <div class="label">
+                Boarding
+            </div>
+
+            <h2>
+                📍 {{ booking.boarding_point }}
+            </h2>
+
+        </div>
+
+        <div style="
+        font-size:40px;
+        color:#2563eb;
+        ">
+            ➜
+        </div>
+
+        <div>
+
+            <div class="label">
+                Destination
+            </div>
+
+            <h2>
+                📍 {{ booking.drop_point }}
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div class="row">
+
+        <div class="box">
+
+            <div class="label">
+                Boarding Point
+            </div>
+
+            <div class="value">
+                {{ booking.boarding_point }}
+            </div>
+
+            <br>
+
+            <div class="label">
+                Boarding Time
+            </div>
+
+            <div class="value">
+                {{ booking.boarding_time }}
+            </div>
+
+        </div>
+
+        <div class="box">
+
+            <div class="label">
+                Drop Point
+            </div>
+
+            <div class="value">
+                {{ booking.drop_point }}
+            </div>
+
+            <br>
+
+            <div class="label">
+                Arrival Time
+            </div>
+
+            <div class="value">
+                {{ booking.drop_time }}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="box">
+
+            <div class="label">
+                Bus Name
+            </div>
+
+            <div class="value">
+                {{ booking.bus_name }}
+            </div>
+
+        </div>
+
+        <div class="box">
+
+            <div class="label">
+                Seats
+            </div>
+
+            <div class="value">
+                {{ booking.seat_no }}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="box">
+
+            <div class="label">
+                Journey Date
+            </div>
+
+            <div class="value">
+                {{ booking.journey_date }}
+            </div>
+
+        </div>
+
+        <div class="box">
+
+            <div class="label">
+                Total Fare
+            </div>
+
+            <div class="value">
+                ₹{{ booking.total_fare }}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="status">
+
+        ✅ BOOKING CONFIRMED
+
+    </div>
+
+    <div class="qr-box">
+
+        <h3>
+            🎫 Ticket QR Code
+        </h3>
+
+        <img
+            src="data:image/png;base64,{{ qr_code }}"
+            alt="QR Code"
+        >
+
+        <p>
+            Booking ID:
+            <b>{{ booking.booking_id }}</b>
+        </p>
+
+        <p>
+            Scan for Booking Verification
+        </p>
+
+    </div>
+    <a href="{% url 'track_bus' booking.id %}"
+   class="download-btn"
+   style="background:#16a34a;">
+
+   📍 Track Bus Live
+
+</a>
+
+    <a href="{% url 'download_ticket' booking.id %}"
+       class="download-btn">
+
+        📄 Download Ticket PDF
+
+    </a>
+
+    <div class="footer">
+
+        <h3>
+            Thank You For Choosing
+            SPONROKO TRAVELS
+        </h3>
+
+        <br>
+
+        SPONROKO Travels Logistics<br>
+
+        #24, A.V Road,<br>
+
+        Kalasipalyam,<br>
+
+        Bangalore - 560002
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<div style="max-width:700px;margin:auto;">
+
+<h2>🎫 Verify Ticket</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <input
+        type="text"
+        name="booking_id"
+        placeholder="Enter Booking ID"
+        required
+    >
+
+    <button type="submit">
+
+        Verify
+
+    </button>
+
+</form>
+
+<br>
+
+{% if booking %}
+
+<div
+style="
+background:#dcfce7;
+padding:20px;
+border-radius:10px;
+">
+
+    <h3>
+        ✅ Ticket Valid
+    </h3>
+
+    <p>
+        Booking ID:
+        {{ booking.booking_id }}
+    </p>
+
+    <p>
+        Passenger:
+        {{ booking.passenger_name }}
+    </p>
+
+    <p>
+        Seats:
+        {{ booking.seat_no }}
+    </p>
+
+    <p>
+        Bus:
+        {{ booking.bus_name }}
+    </p>
+
+    <p>
+        Status:
+        {{ booking.payment_status }}
+    </p>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

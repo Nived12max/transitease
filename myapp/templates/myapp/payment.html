@@ -1,0 +1,492 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+.payment-card{
+    max-width:700px;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.payment-title{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.amount-card{
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+    color:white;
+    text-align:center;
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.amount-card h1{
+    font-size:42px;
+    margin-top:10px;
+}
+
+.info-box{
+    background:#f8fafc;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.upi-id{
+    font-size:20px;
+    font-weight:bold;
+    color:#2563eb;
+    margin:10px 0;
+}
+
+.copy-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.security{
+    text-align:center;
+    color:#16a34a;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.qr-section{
+    text-align:center;
+    margin:20px 0;
+}
+
+.qr-section img{
+    border:1px solid #ddd;
+    padding:10px;
+    border-radius:10px;
+    background:white;
+}
+
+.qr-section p{
+    margin-top:10px;
+    font-weight:bold;
+}
+
+.app-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    text-decoration:none;
+    color:white;
+    padding:16px;
+    border-radius:12px;
+    margin-bottom:12px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.gpay{
+    background:#34a853;
+}
+
+.phonepe{
+    background:#5f259f;
+}
+
+.paytm{
+    background:#00baf2;
+}
+
+.complete-btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    background:#16a34a;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+.complete-btn:hover{
+    background:#15803d;
+}
+
+.note{
+    text-align:center;
+    color:#666;
+    margin-top:20px;
+    line-height:1.6;
+}
+.payment-layout{
+    display:grid;
+    grid-template-columns:550px 1fr;
+    gap:30px;
+}
+
+.ticket-summary{
+    background:#f8fafc;
+    padding:25px;
+    border-radius:15px;
+    border:1px solid #e5e7eb;
+}
+
+.ticket-summary h2{
+    margin-bottom:20px;
+    color:#2563eb;
+}
+
+.ticket-summary p{
+    margin:10px 0;
+}
+
+.payment-section{
+    background:white;
+}
+
+</style>
+
+
+
+<div class="payment-card">
+
+<div class="payment-title">
+    <h1>🚌 SPONROKO TRAVELS</h1>
+    <p>Choose Your Payment Method</p>
+</div>
+
+<div class="payment-card">
+<div class="payment-layout">
+
+    <div class="ticket-summary">
+
+        <h2>🎫 Journey Summary</h2>
+
+        <p>
+            <b>Bus:</b>
+            {{ request.session.bus_name }}
+        </p>
+
+        <p>
+            <b>Date:</b>
+            {{ request.session.journey_date }}
+        </p>
+
+        <p>
+            <b>Boarding:</b>
+            {{ request.session.boarding_point }}
+        </p>
+
+        <p>
+            <b>Dropping:</b>
+            {{ request.session.drop_point }}
+        </p>
+
+        <p>
+            <b>Seats:</b>
+            {{ request.session.booking_data.seats|join:", " }}
+        </p>
+
+        <hr>
+
+        <h3>
+            Total Fare : ₹{{ total_fare }}
+        </h3>
+
+    </div>
+
+    <div class="payment-section">
+
+        <!-- Payment Methods Here -->
+
+    </div>
+
+</div>
+
+<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+
+    <button type="button" onclick="showTab('gpay')" class="copy-btn">
+        🟢 GPay
+    </button>
+
+    <button type="button" onclick="showTab('upi')" class="copy-btn">
+        🟣 UPI
+    </button>
+
+    <button type="button" onclick="showTab('card')" class="copy-btn">
+        💳 Card
+    </button>
+
+    <button type="button" onclick="showTab('bank')" class="copy-btn">
+        🏦 Net Banking
+    </button>
+
+</div>
+
+<div id="gpay">
+
+    <div class="info-box">
+
+        <p><b>Google Pay QR</b></p>
+
+        <div class="upi-id">
+            nivedragesh22@oksbi
+        </div>
+
+    </div>
+
+    <div class="qr-section">
+
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=nivedragesh22@oksbi">
+
+    </div>
+
+    <form method="POST"
+      action="{% url 'payment_success' %}">
+    {% csrf_token %}
+
+    <button class="complete-btn">
+        Pay ₹{{ total_fare }}
+    </button>
+
+</form>
+
+</div>
+
+<div id="upi" style="display:none;">
+
+<form
+    id="upiForm"
+    method="POST"
+    action="{% url 'payment_success' %}">
+
+    {% csrf_token %}
+
+    <input
+        type="hidden"
+        name="payment_method"
+        value="UPI">
+
+    <div class="info-box">
+
+        <h3>🟣 Enter UPI ID</h3>
+
+        <input
+            type="text"
+            id="upi_id"
+            name="upi_id"
+            placeholder="example@okaxis"
+            required
+            style="
+            width:100%;
+            padding:12px;
+            border:1px solid #ddd;
+            border-radius:10px;
+            margin-top:10px;">
+
+        <div
+            id="upiError"
+            style="
+            display:none;
+            margin-top:12px;
+            padding:12px;
+            background:#fee2e2;
+            color:#dc2626;
+            border:1px solid #ef4444;
+            border-radius:8px;
+            font-weight:bold;">
+        </div>
+
+    </div>
+
+    <button
+        type="button"
+        class="complete-btn"
+        onclick="validateUPI()">
+
+        Pay ₹{{ total_fare }}
+
+    </button>
+
+</form>
+
+</div>
+
+<!-- CARD -->
+
+<div id="card" style="display:none;">
+
+<form method="POST" action="{% url 'payment_success' %}">
+
+    {% csrf_token %}
+
+    <input type="hidden"
+           name="payment_method"
+           value="Card">
+
+    <div class="info-box">
+
+        <h3>💳 Card Details</h3>
+
+        <input
+            type="text"
+            name="card_number"
+            placeholder="Card Number"
+            required
+            style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin-bottom:10px;">
+
+        <div style="display:flex;gap:10px;">
+
+            <input
+                type="text"
+                name="expiry"
+                placeholder="MM/YY"
+                required
+                style="width:50%;padding:12px;border:1px solid #ddd;border-radius:10px;">
+
+            <input
+                type="password"
+                name="cvv"
+                placeholder="CVV"
+                required
+                style="width:50%;padding:12px;border:1px solid #ddd;border-radius:10px;">
+
+        </div>
+
+    </div>
+
+    <button type="submit" class="complete-btn">
+        Pay ₹{{ total_fare }}
+    </button>
+
+</form>
+
+</div>
+
+
+<!-- NET BANKING -->
+
+<div id="bank" style="display:none;">
+
+<form method="POST" action="{% url 'payment_success' %}">
+
+    {% csrf_token %}
+
+    <input type="hidden"
+           name="payment_method"
+           value="Net Banking">
+
+    <div class="info-box">
+
+        <h3>🏦 Net Banking</h3>
+
+        <select
+            name="bank_name"
+            required
+            style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin-bottom:10px;">
+
+            <option value="">
+                Select Bank
+            </option>
+
+            <option value="SBI">
+                SBI
+            </option>
+
+            <option value="HDFC">
+                HDFC
+            </option>
+
+            <option value="ICICI">
+                ICICI
+            </option>
+
+            <option value="AXIS">
+                AXIS
+            </option>
+
+            <option value="Canara Bank">
+                Canara Bank
+            </option>
+
+        </select>
+
+        <input
+            type="text"
+            name="account_number"
+            placeholder="Account Number"
+            required
+            style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;">
+
+    </div>
+
+    <button type="submit" class="complete-btn">
+        Pay ₹{{ total_fare }}
+    </button>
+
+</form>
+
+</div>
+<script>
+
+function showTab(tab){
+
+    document.getElementById("gpay").style.display="none";
+    document.getElementById("upi").style.display="none";
+    document.getElementById("card").style.display="none";
+    document.getElementById("bank").style.display="none";
+
+    document.getElementById(tab).style.display="block";
+}
+
+</script>
+
+
+
+</div>
+
+<script>
+
+function validateUPI(){
+
+    let upi =
+        document.getElementById("upi_id")
+        .value.trim();
+
+    let error =
+        document.getElementById("upiError");
+
+    let pattern =
+        /^[a-zA-Z0-9._-]{2,}@[a-zA-Z]{2,}$/;
+
+    if(!pattern.test(upi)){
+
+        error.style.display = "block";
+
+        error.innerHTML =
+            "⚠ Invalid UPI ID. Example: nived@oksbi";
+
+        return;
+    }
+
+    error.style.display = "none";
+
+    document.getElementById(
+        "upiForm"
+    ).submit();
+}
+
+</script>
+{% endblock %}

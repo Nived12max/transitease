@@ -1,0 +1,148 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+.form-box{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.form-box h2{
+    margin-bottom:20px;
+    text-align:center;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.save-btn{
+    width:100%;
+    padding:15px;
+    background:#16a34a;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.save-btn:hover{
+    background:#15803d;
+}
+
+</style>
+
+<div class="form-box">
+
+<h2>🚌 Add New Bus</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label>Bus Name</label>
+        <input type="text" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label>Bus Number</label>
+        <input type="text" name="bus_number" required>
+    </div>
+
+    <div class="form-group">
+        <label>Bus Type</label>
+
+        <select name="bus_type">
+
+            <option value="Sleeper">
+                Sleeper
+            </option>
+
+            <option value="Seater">
+                Seater
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="form-group">
+        <label>Route</label>
+
+        <textarea
+            name="route"
+            rows="4"
+            placeholder="Bangalore,Mysore,Iritty,Mattanur,Kannur"
+            required></textarea>
+
+    </div>
+
+    <div class="form-group">
+        <label>Departure Time</label>
+        <input type="text" name="departure_time">
+    </div>
+
+    <div class="form-group">
+        <label>Arrival Time</label>
+        <input type="text" name="arrival_time">
+    </div>
+
+    <div class="form-group">
+        <label>Fare</label>
+        <input type="number" name="fare">
+    </div>
+
+    <div class="form-group">
+        <label>Driver Name</label>
+        <input type="text" name="driver_name">
+    </div>
+
+    <div class="form-group">
+    <label>Driver Phone</label>
+
+    <input
+        type="tel"
+        name="driver_phone"
+        maxlength="10"
+        pattern="[0-9]{10}"
+        placeholder="Enter 10 digit phone number"
+        required>
+</div>
+
+    <button
+        type="submit"
+        class="save-btn">
+
+        💾 Save Bus
+
+    </button>
+
+</form>
+
+
+</div>
+
+{% endblock %}

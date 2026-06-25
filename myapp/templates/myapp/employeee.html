@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <title>sponroko employee</title>
+</head>
+<body>
+    <h1>employee details</h1>
+    <img src="{%static '/image/logo.png'%}" width="400px" height="500px">
+
+    {% for e in employee %}
+    <p>name:{{e.name}}</p>
+    <p>salary:{{e.salary}}</p>
+    <p>phone:{{e.phone}}</p>
+
+    
+
+    <hr>
+    {% endfor %}
+
+    
+</body>
+</html>

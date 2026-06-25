@@ -1,0 +1,114 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+.analytics-container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.analytics-title{
+    margin-bottom:25px;
+    color:#2563eb;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.stat-card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    text-align:center;
+}
+
+.stat-card h1{
+    font-size:40px;
+    margin-bottom:10px;
+    color:#2563eb;
+}
+
+.stat-card p{
+    color:#64748b;
+    font-size:16px;
+}
+.card-link{
+    text-decoration:none;
+    color:inherit;
+}
+
+.card-link:hover .stat-card{
+    transform:translateY(-5px);
+    transition:.3s;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+</style>
+
+<div class="analytics-container">
+
+<h1 class="analytics-title">
+📊 SPONROKO Analytics Dashboard
+</h1>
+
+<div class="stats-grid">
+<a href="{% url 'users_list' %}" class="card-link">
+
+<div class="stat-card">
+
+    <h1>{{ total_users }}</h1>
+
+    <p>👥 Total Users</p>
+
+</div>
+
+</a>
+
+<a href="{% url 'login_history' %}" class="card-link">
+
+<div class="stat-card">
+
+    <h1>{{ total_logins }}</h1>
+
+    <p>🟢 Total Logins</p>
+
+</div>
+
+</a>
+
+<div class="stat-card">
+    <h1>{{ total_bookings }}</h1>
+    <p>🎫 Total Bookings</p>
+</div>
+
+<div class="stat-card">
+    <h1>₹{{ total_revenue }}</h1>
+    <p>💰 Total Revenue</p>
+</div>
+
+<div class="stat-card">
+    <h1>{{ total_buses }}</h1>
+    <p>🚌 Total Buses</p>
+</div>
+
+<div class="stat-card">
+    <h1>{{ total_routes }}</h1>
+    <p>📍 Total Routes</p>
+</div>
+
+<div class="stat-card">
+    <h1>{{ total_complaints }}</h1>
+    <p>📨 Complaints</p>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

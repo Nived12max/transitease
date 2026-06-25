@@ -1,0 +1,26 @@
+<h1>My Bookings</h1>
+
+<table border="1">
+    <tr>
+        <th>Booking ID</th>
+        <th>Bus</th>
+        <th>Date</th>
+        <th>Seat</th>
+        <th>Ticket</th>
+    </tr>
+
+    {% for b in bookings %}
+    <tr>
+        <td>{{ b.booking_id }}</td>
+        <td>{{ b.bus_name }}</td>
+        <td>{{ b.journey_date }}</td>
+        <td>{{ b.seat_no }}</td>
+
+        <td>
+            <a href="{% url 'ticket' b.id %}">
+                View Ticket
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

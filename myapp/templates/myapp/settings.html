@@ -1,0 +1,333 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+.settings-container{
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.settings-card{
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+.settings-header{
+    background:linear-gradient(135deg,#111827,#ea580c);
+    color:white;
+    padding:30px;
+    text-align:center;
+}
+
+.settings-header h2{
+    margin:0;
+}
+
+.section{
+    padding:25px;
+    border-bottom:1px solid #eee;
+}
+
+.section h3{
+    margin-bottom:15px;
+    color:#111827;
+}
+
+.form-control{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-size:15px;
+}
+
+.btn{
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    color:white;
+    font-weight:600;
+}
+
+.btn-save{
+    background:#16a34a;
+}
+
+.btn-password{
+    background:#2563eb;
+}
+
+.btn-logout{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    background:#dc2626;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+.info-box{
+    background:#f8fafc;
+    padding:15px;
+    border-radius:12px;
+}
+
+.info-title{
+    color:#64748b;
+    font-size:13px;
+}
+
+.info-value{
+    font-size:18px;
+    font-weight:600;
+    margin-top:5px;
+}
+
+.success{
+    background:#dcfce7;
+    color:#166534;
+    padding:12px;
+    border-radius:10px;
+    margin:20px;
+}
+
+.error{
+    background:#fee2e2;
+    color:#991b1b;
+    padding:12px;
+    border-radius:10px;
+    margin:20px;
+}
+
+</style>
+
+<div class="settings-container">
+
+<div class="settings-card">
+
+    <div class="settings-header">
+
+        <h2>⚙️ Account Settings</h2>
+
+        <p>
+            Manage your SPONROKO Travels account
+        </p>
+
+    </div>
+
+    {% if message %}
+
+        {% if 'incorrect' in message or 'exists' in message %}
+
+            <div class="error">
+                {{ message }}
+            </div>
+
+        {% else %}
+
+            <div class="success">
+                {{ message }}
+            </div>
+
+        {% endif %}
+
+    {% endif %}
+
+    <div class="section">
+
+        <h3>👤 Profile Information</h3>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="action"
+                value="update_profile"
+            >
+
+            <input
+                type="text"
+                name="username"
+                value="{{ request.user.username }}"
+                class="form-control"
+                placeholder="Username"
+                required
+            >
+
+            <input
+                type="email"
+                name="email"
+                value="{{ request.user.email }}"
+                class="form-control"
+                placeholder="Email"
+                required
+            >
+
+            <button
+                type="submit"
+                class="btn btn-save"
+            >
+                Save Changes
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="section">
+
+        <h3>🔒 Security</h3>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="action"
+                value="show_password"
+            >
+
+            <button
+                type="submit"
+                class="btn btn-password"
+            >
+                Change Password
+            </button>
+
+        </form>
+
+        {% if show_password_form %}
+
+        <br>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="action"
+                value="change_password"
+            >
+
+            <input
+                type="password"
+                name="old_password"
+                class="form-control"
+                placeholder="Current Password"
+                required
+            >
+
+            <input
+                type="password"
+                name="new_password"
+                class="form-control"
+                placeholder="New Password"
+                required
+            >
+
+            <button
+                type="submit"
+                class="btn btn-password"
+            >
+                Update Password
+            </button>
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+    <div class="section">
+
+        <h3>ℹ️ Account Information</h3>
+
+        <div class="info-grid">
+
+            <div class="info-box">
+
+                <div class="info-title">
+                    Username
+                </div>
+
+                <div class="info-value">
+                    {{ request.user.username }}
+                </div>
+
+            </div>
+
+            <div class="info-box">
+
+                <div class="info-title">
+                    Email
+                </div>
+
+                <div class="info-value">
+                    {{ request.user.email }}
+                </div>
+
+            </div>
+
+            <div class="info-box">
+
+                <div class="info-title">
+                    Member Since
+                </div>
+
+                <div class="info-value">
+                    {{ request.user.date_joined|date:"d M Y" }}
+                </div>
+
+            </div>
+
+            <div class="info-box">
+
+                <div class="info-title">
+                    Last Login
+                </div>
+
+                <div class="info-value">
+                    {{ request.user.last_login|date:"d M Y H:i" }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        <h3>🚪 Account</h3>
+
+        <a href="{% url 'logout' %}"
+           class="btn-logout">
+           Logout
+        </a>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

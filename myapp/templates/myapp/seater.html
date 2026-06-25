@@ -1,0 +1,277 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SPONROKO Seater Bus</title>
+    <p style="
+text-align:center;
+color:red;
+font-weight:bold;
+margin-bottom:15px;
+">
+Maximum 6 passengers can be booked in a single booking.
+</p>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+            padding:30px;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        .bus{
+            width:500px;
+            margin:auto;
+            background:white;
+            padding:25px;
+            border-radius:15px;
+            box-shadow:0 0 10px rgba(0,0,0,.1);
+        }
+
+        .row{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
+            margin:10px 0;
+        }
+
+        .aisle{
+            width:40px;
+        }
+
+        .seat{
+            width:50px;
+            height:50px;
+            border:none;
+            border-radius:8px;
+            background:#d1d5db;
+            cursor:pointer;
+            font-weight:bold;
+        }
+
+        .seat:hover{
+            background:#9ca3af;
+        }
+
+        .selected{
+            background:#22c55e;
+            color:white;
+        }
+
+        .booked{
+            background:#ef4444;
+            color:white;
+            cursor:not-allowed;
+        }
+
+        #selectedSeats{
+            text-align:center;
+            margin-top:20px;
+            font-size:18px;
+        }
+
+        .continue-btn{
+            display:block;
+            width:250px;
+            margin:20px auto;
+            padding:12px;
+            border:none;
+            border-radius:10px;
+            background:#2563eb;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<h1>🚌 SPONROKO Seater (48 Seats)</h1>
+
+<div class="bus">
+
+    <div class="row">
+        <button type="button" class="seat">A1</button>
+        <button type="button" class="seat">A2</button>
+        <div class="aisle"></div>
+        <button type="button" class="seat">A3</button>
+        <button type="button" class="seat">A4</button>
+    </div>
+
+    <div class="row">
+        <button type="button" class="seat">B1</button>
+        <button type="button" class="seat">B2</button>
+        <div class="aisle"></div>
+        <button type="button" class="seat">B3</button>
+        <button type="button" class="seat">B4</button>
+    </div>
+
+    <div class="row">
+        <button type="button" class="seat">C1</button>
+        <button type="button" class="seat">C2</button>
+        <div class="aisle"></div>
+        <button type="button" class="seat">C3</button>
+        <button type="button" class="seat">C4</button>
+    </div>
+
+    <div class="row">
+        <button type="button" class="seat">D1</button>
+        <button type="button" class="seat">D2</button>
+        <div class="aisle"></div>
+        <button type="button" class="seat">D3</button>
+        <button type="button" class="seat">D4</button>
+    </div>
+
+    <div class="row">
+        <button type="button" class="seat">E1</button>
+        <button type="button" class="seat">E2</button>
+        <div class="aisle"></div>
+        <button type="button" class="seat">E3</button>
+        <button type="button" class="seat">E4</button>
+    </div>
+
+    <div class="row">
+        <button type="button" class="seat">F1</button>
+        <button type="button" class="seat">F2</button>
+        <div class="aisle"></div>
+        <button type="button" class="seat">F3</button>
+        <button type="button" class="seat">F4</button>
+    </div>
+
+    <div class="row">
+        <button type="button" class="seat">G1</button>
+        <button type="button" class="seat">G2</button>
+        <div class="aisle"></div>
+        <button type="button" class="seat">G3</button>
+        <button type="button" class="seat">G4</button>
+    </div>
+
+    <div class="row">
+        <button type="button" class="seat">H1</button>
+        <button type="button" class="seat">H2</button>
+        <div class="aisle"></div>
+        <button type="button" class="seat">H3</button>
+        <button type="button" class="seat">H4</button>
+    </div>
+
+</div>
+
+<div id="selectedSeats">
+    Selected Seats: None
+</div>
+
+<form action="{% url 'passenger' %}" method="GET">
+
+    <input
+        type="hidden"
+        id="selectedSeatsInput"
+        name="seats"
+    >
+
+    <button class="continue-btn" type="submit">
+        Continue Booking
+    </button>
+
+</form>
+<input
+    type="hidden"
+    id="bookedSeatsData"
+    value="{{ booked_seats|join:',' }}"
+>
+<script>
+
+let bookedSeats =
+document.getElementById("bookedSeatsData")
+.value
+.split(",");
+
+document.querySelectorAll(".seat").forEach(btn => {
+
+    if(bookedSeats.includes(btn.innerText.trim())){
+
+        btn.classList.add("booked");
+        btn.disabled = true;
+
+    }
+
+});
+
+let seats = document.querySelectorAll(".seat");
+let selected = [];
+
+seats.forEach(seat => {
+
+    seat.addEventListener("click", () => {
+
+        if(seat.disabled){
+            return;
+        }
+
+        let seatNo = seat.innerText;
+
+        if(selected.includes(seatNo)){
+
+            selected =
+            selected.filter(
+                s => s !== seatNo
+            );
+
+            seat.classList.remove("selected");
+
+        }
+        else{
+
+            if(selected.length >= 6){
+
+                alert(
+                    "Maximum 6 seats can be booked."
+                );
+
+                return;
+            }
+
+            selected.push(seatNo);
+
+            seat.classList.add("selected");
+        }
+
+        document.getElementById(
+            "selectedSeats"
+        ).innerHTML =
+        "Selected Seats: " +
+        (selected.length ?
+        selected.join(", ")
+        : "None");
+
+        document.getElementById(
+            "selectedSeatsInput"
+        ).value =
+        selected.join(",");
+
+    });
+
+});
+
+</script>
+</body>
+</html>
+{% endblock %}

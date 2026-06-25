@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Student</title>
+</head>
+<body>
+
+<h1>Edit Student</h1>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <label>Name</label><br>
+    <input type="text" name="name" value="{{ student.name }}">
+    <br><br>
+
+    <label>Age</label><br>
+    <input type="number" name="age" value="{{ student.age }}">
+    <br><br>
+
+    <label>Roll No</label><br>
+    <input type="text" name="rollno" value="{{ student.rollno }}">
+    <br><br>
+
+    <label>Department</label><br>
+    <input type="text" name="dept" value="{{ student.dept }}">
+    <br><br>
+
+    <button type="submit">Update</button>
+
+</form>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+.page-title{
+    color:#2563eb;
+    margin-bottom:25px;
+}
+
+.notification-card{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    border-left:5px solid #2563eb;
+    transition:.3s;
+}
+
+.notification-card:hover{
+    transform:translateY(-2px);
+}
+
+.notification-message{
+    font-size:16px;
+    margin-bottom:10px;
+}
+
+.notification-time{
+    color:#6b7280;
+    font-size:13px;
+}
+
+.empty-box{
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.empty-box h3{
+    color:#64748b;
+}
+
+</style>
+
+<div class="container">
+
+<h1 class="page-title">
+🔔 Notifications
+</h1>
+
+{% for notification in notifications %}
+
+<div class="notification-card">
+
+<div class="notification-message">
+
+    {{ notification.message }}
+
+</div>
+
+<div class="notification-time">
+
+    🕒 {{ notification.created_at }}
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="empty-box">
+
+
+<h3>
+    🔕 No Notifications Yet
+</h3>
+
+<p>
+    You will receive booking updates,
+    complaint replies and travel alerts here.
+</p>
+
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

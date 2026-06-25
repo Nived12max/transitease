@@ -1,0 +1,303 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+.container{
+    max-width:850px;
+    margin:40px auto;
+    background:white;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+.header{
+    background:linear-gradient(135deg,#111827,#ea580c);
+    color:white;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    margin-bottom:8px;
+}
+
+.info-banner{
+    background:#111827;
+    color:white;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:20px;
+    text-align:center;
+    font-weight:600;
+}
+
+.passenger-box{
+    background:#f8fafc;
+    border-left:5px solid #ea580c;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.passenger-box h2{
+    color:#111827;
+    margin-bottom:15px;
+    font-size:20px;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    margin-top:8px;
+    margin-bottom:15px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:15px;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+    border-color:#ea580c;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    background:#ea580c;
+    color:white;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:17px;
+    font-weight:600;
+}
+
+button:hover{
+    background:#c2410c;
+}
+
+label{
+    font-weight:600;
+    color:#374151;
+}
+
+</style>
+
+<div class="container">
+
+<div class="header">
+
+    <h1>🚌 Passenger Details</h1>
+
+    <p>
+        Complete passenger information to continue booking
+    </p>
+
+</div>
+
+<div class="info-banner">
+    Please enter passenger details exactly as per Government ID proof
+</div>
+
+
+    <form action="{% url 'summary' %}" method="POST" id="passengerForm">
+
+{% csrf_token %}
+
+{% for seat in seat_list %}
+
+<div class="passenger-box">
+
+    <h2>Passenger For Berth {{ seat }}</h2>
+
+    <input
+        type="hidden"
+        name="seat"
+        value="{{ seat }}"
+    >
+
+    <label>Passenger Name</label>
+
+    <input
+    type="text"
+    name="name"
+    placeholder="Enter Full Name"
+    pattern="[A-Za-z ]{2,50}"
+    title="Name should contain only letters and spaces"
+    required
+>
+
+    <label>Age</label>
+
+    <input
+        type="number"
+        name="age"
+        placeholder="Enter Age"
+        min="1"
+        max="120"
+        required
+    >
+
+    <label>Gender</label>
+
+    <select name="gender" required>
+
+        <option value="">
+            Select Gender
+        </option>
+
+        <option value="Male">
+            Male
+        </option>
+
+        <option value="Female">
+            Female
+        </option>
+
+        <option value="Other">
+            Other
+        </option>
+
+    </select>
+
+    <label>Mobile Number</label>
+
+    <input
+        type="tel"
+        name="phone"
+        placeholder="10 Digit Mobile Number"
+        minlength="10"
+        maxlength="10"
+        required
+    >
+
+    <label>Email Address</label>
+
+    <input
+        type="email"
+        name="email"
+        placeholder="Enter Email Address"
+        required
+    >
+
+</div>
+
+{% endfor %}
+
+<button type="submit">
+    Continue To Booking Summary →
+</button>
+
+</form>
+
+<script>
+console.log("Validation Loaded");
+document.getElementById(
+    "passengerForm"
+).addEventListener(
+    "submit",
+    function(e){
+
+        const names =
+        document.getElementsByName("name");
+
+        const phones =
+        document.getElementsByName("phone");
+
+        const emails =
+        document.getElementsByName("email");
+
+        for(let i=0;i<names.length;i++){
+
+            let name =
+            names[i].value.trim();
+
+            let phone =
+            phones[i].value.trim();
+
+            let email =
+            emails[i].value.trim();
+
+            if(
+                !/^[A-Za-z ]{2,50}$/
+                .test(name)
+            ){
+
+                alert(
+                    "Passenger " +
+                    (i+1) +
+                    ": Name should contain only letters and spaces"
+                );
+
+                names[i].focus();
+
+                e.preventDefault();
+
+                return false;
+            }
+
+            if(
+                !/^[6-9][0-9]{9}$/
+                .test(phone)
+            ){
+
+                alert(
+                    "Passenger " +
+                    (i+1) +
+                    ": Enter a valid 10 digit mobile number"
+                );
+
+                phones[i].focus();
+
+                e.preventDefault();
+
+                return false;
+            }
+
+            const emailPattern =
+/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+
+if(!emailPattern.test(email)){
+
+    alert(
+        "Passenger " +
+        (i+1) +
+        ": Enter a valid email address"
+    );
+
+    emails[i].focus();
+
+    e.preventDefault();
+
+    return false;
+}
+
+        }
+
+    }
+);
+
+</script>
+
+
+</div>
+
+{% endblock %}

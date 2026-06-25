@@ -1,0 +1,135 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+.pickup-card{
+    max-width:700px;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,.1);
+}
+
+.pickup-card h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.form-group select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.continue-btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.continue-btn:hover{
+    background:#1d4ed8;
+}
+
+.note{
+    text-align:center;
+    color:#666;
+    margin-bottom:20px;
+}
+
+</style>
+
+<div class="pickup-card">
+
+
+<h2>
+    📍 Select Boarding & Drop Point
+</h2>
+
+<p class="note">
+    Please select your boarding and drop locations
+</p>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <div class="form-group">
+
+        <label>
+            Boarding Point
+        </label>
+
+        <select
+            name="boarding_point"
+            required>
+
+            {% for stop in stops %}
+
+            <option value="{{ stop }}">
+                {{ stop }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+    <div class="form-group">
+
+        <label>
+            Drop Point
+        </label>
+
+        <select
+            name="drop_point"
+            required>
+
+            {% for stop in stops %}
+
+            <option value="{{ stop }}">
+                {{ stop }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+    <button
+        type="submit"
+        class="continue-btn">
+
+        Continue to Seat Selection →
+
+    </button>
+
+</form>
+
+
+</div>
+
+{% endblock %}

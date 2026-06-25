@@ -1,0 +1,210 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+.search-box{
+    width:85%;
+    max-width:950px;
+    background:white;
+    margin:-60px auto 30px;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.1);
+    position:relative;
+    z-index:5;
+}
+
+.search-box h2{
+    margin-bottom:20px;
+    color:#2563eb;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:15px;
+}
+
+select,
+input{
+    width:100%;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    font-size:15px;
+}
+
+.search-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    background:#2563eb;
+    color:white;
+    border-radius:12px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.cards{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+    margin:40px;
+}
+
+.card{
+    width:280px;
+    background:white;
+    border-radius:18px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.card h2{
+    font-size:42px;
+    color:#2563eb;
+}
+
+.features{
+    padding:50px;
+    text-align:center;
+}
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.feature{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+</style>
+
+<div class="search-box">
+
+    <h2>🔍 Search Buses</h2>
+
+    <form method="GET" action="{% url 'bus_list' %}">
+
+        <form method="GET" action="{% url 'bus_list' %}">
+
+<div class="form-grid">
+
+    <select name="origin" required>
+
+        <option value="">
+            From
+        </option>
+
+        {% for route in routes %}
+
+        <option value="{{ route.from_city }}">
+            {{ route.from_city }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <select name="destination" required>
+
+        <option value="">
+            To
+        </option>
+
+        {% for route in routes %}
+
+        <option value="{{ route.to_city }}">
+            {{ route.to_city }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <input
+        type="date"
+        name="journey_date"
+        required>
+
+</div>
+
+<br>
+
+<button
+    type="submit"
+    class="search-btn">
+
+    Search Buses
+
+</button>
+
+
+</form>
+
+
+</div>
+
+<div class="cards">
+
+    <div class="card">
+        <h2>10</h2>
+        <p>Total Buses</p>
+    </div>
+
+    <div class="card">
+        <h2>2</h2>
+        <p>Routes Available</p>
+    </div>
+
+    <div class="card">
+        <h2>24/7</h2>
+        <p>Customer Support</p>
+    </div>
+
+</div>
+
+<section class="features">
+
+    <h2>Why Travel With Us?</h2>
+
+    <div class="feature-grid">
+
+        <div class="feature">
+            <h3>🎫 Easy Booking</h3>
+            <p>Book seats in seconds.</p>
+        </div>
+
+        <div class="feature">
+            <h3>📍 Live Tracking</h3>
+            <p>Track buses in real time.</p>
+        </div>
+
+        <div class="feature">
+            <h3>💺 Seat Selection</h3>
+            <p>Choose your preferred seat.</p>
+        </div>
+
+        <div class="feature">
+            <h3>💳 Secure Payment</h3>
+            <p>Safe and reliable transactions.</p>
+        </div>
+        <div class="feature">
+            <h3>Women Safety</h3>
+            <p>Safe and comfortable</p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

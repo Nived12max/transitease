@@ -1,0 +1,100 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+.card{
+    width:700px;
+    margin:50px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+    text-align:center;
+    color:#2575fc;
+    margin-bottom:20px;
+}
+
+p{
+    font-size:18px;
+    margin:8px 0;
+}
+
+.passenger{
+    border:1px solid #ddd;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.summary-box{
+    background:#f8fafc;
+    padding:15px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.btn{
+    display:block;
+    width:250px;
+    margin:25px auto;
+    text-align:center;
+    background:#16a34a;
+    color:white;
+    padding:14px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.btn:hover{
+    background:#15803d;
+}
+
+</style>
+
+<div class="card">
+
+    <h1>Booking Summary</h1>
+
+    {% for p in passengers %}
+
+    <div class="passenger">
+
+        <p><b>Seat/Berth:</b> {{ p.seat }}</p>
+        <p><b>Name:</b> {{ p.name }}</p>
+        <p><b>Age:</b> {{ p.age }}</p>
+        <p><b>Gender:</b> {{ p.gender }}</p>
+        <p><b>Phone:</b> {{ p.phone }}</p>
+        <p><b>Email:</b> {{ p.email }}</p>
+
+    </div>
+
+    {% endfor %}
+
+    <div class="summary-box">
+
+        <p><b>Bus:</b> {{ bus_name }}</p>
+
+        <p><b>Journey Date:</b> {{ journey_date }}</p>
+
+        <p><b>Total Seats:</b> {{ passengers|length }}</p>
+
+        <p><b>Fare Per Seat:</b> ₹{{ fare_per_seat }}</p>
+
+        <p><b>Total Fare:</b> ₹{{ total_fare }}</p>
+
+    </div>
+
+    <a href="{% url 'payment' %}" class="btn">
+        💳 Confirm Booking & Proceed To Payment
+    </a>
+
+</div>
+
+{% endblock %}

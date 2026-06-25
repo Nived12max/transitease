@@ -1,0 +1,176 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.header h1{
+    color:#2575fc;
+    margin-bottom:10px;
+}
+
+.route-info{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+    margin-bottom:20px;
+}
+
+.bus-card{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.bus-name{
+    color:#2575fc;
+    margin-bottom:10px;
+}
+
+.bus-type{
+    color:#666;
+    margin-bottom:15px;
+}
+
+.details{
+    display:flex;
+    justify-content:space-between;
+    margin:15px 0;
+    flex-wrap:wrap;
+}
+
+.detail-box{
+    text-align:center;
+}
+
+.detail-box h3{
+    margin-bottom:5px;
+}
+
+.fare{
+    color:green;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.btn{
+    display:inline-block;
+    background:#2575fc;
+    color:white;
+    padding:10px 20px;
+    text-decoration:none;
+    border-radius:8px;
+    margin-top:10px;
+}
+
+.btn:hover{
+    background:#1a5fd0;
+}
+
+.no-bus{
+    text-align:center;
+    color:red;
+    margin-top:50px;
+}
+
+</style>
+
+<div class="header">
+
+<h1>🚌 Available Buses</h1>
+
+</div>
+
+<div class="route-info">
+
+
+<p><b>From:</b> {{ origin }}</p>
+
+<p><b>To:</b> {{ destination }}</p>
+
+<p><b>Date:</b> {{ date }}</p>
+
+
+</div>
+
+{% if buses %}
+
+
+{% for bus in buses %}
+
+<div class="bus-card">
+
+    <h2 class="bus-name">
+        {{ bus.name }}
+    </h2>
+
+    <p class="bus-type">
+        Bus Type : {{ bus.bus_type }}
+    </p>
+
+    <div class="details">
+
+        <div class="detail-box">
+            <h3>{{ bus.departure_time }}</h3>
+            <p>Departure</p>
+        </div>
+
+        <div class="detail-box">
+            <h3>{{ bus.arrival_time }}</h3>
+            <p>Arrival</p>
+        </div>
+
+        <div class="detail-box">
+            <h3 class="fare">
+                ₹{{ bus.fare }}
+            </h3>
+            <p>Fare</p>
+        </div>
+
+    </div>
+
+    <a
+    href="{% url 'pickup_drop' %}?type={{ bus.bus_type|lower }}&fare={{ bus.fare }}&bus={{ bus.name|urlencode }}&date={{ date|urlencode }}&departure={{ bus.departure_time|urlencode }}&arrival={{ bus.arrival_time|urlencode }}&route={{ bus.route|urlencode }}"
+    class="btn">
+
+        Select Seats
+
+    </a>
+
+
+
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<div class="no-bus">
+
+    <h2>No buses available for this route</h2>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,331 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>SPONROKO Sleeper</title>
+<p style="
+text-align:center;
+color:red;
+font-weight:bold;
+margin-bottom:15px;
+">
+Maximum 6 passengers can be booked in a single booking.
+</p>
+
+<style>
+
+body{
+    background:#f4f6f9;
+    font-family:Arial;
+    padding:20px;
+}
+
+.bus{
+    width:700px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+}
+
+.deck-title{
+    text-align:center;
+    margin:20px 0;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    margin:10px 0;
+}
+
+.single{
+    width:70px;
+    height:45px;
+    border:none;
+    background:#ddd;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.double-group{
+    display:flex;
+    gap:10px;
+}
+
+.double{
+    width:70px;
+    height:45px;
+    border:none;
+    background:#ddd;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.selected{
+    background:#22c55e;
+    color:white;
+}
+
+#selectedSeats{
+    text-align:center;
+    margin-top:20px;
+    font-size:18px;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1 align="center">🛏️ SPONROKO Sleeper (2+1)</h1>
+
+<div class="bus">
+
+<h2 class="deck-title">Upper Deck</h2>
+
+<div class="row">
+<button class="single">SU1</button>
+<div class="double-group">
+<button class="double">DU1</button>
+<button class="double">DU2</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SU2</button>
+<div class="double-group">
+<button class="double">DU3</button>
+<button class="double">DU4</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SU3</button>
+<div class="double-group">
+<button class="double">DU5</button>
+<button class="double">DU6</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SU4</button>
+<div class="double-group">
+<button class="double">DU7</button>
+<button class="double">DU8</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SU5</button>
+<div class="double-group">
+<button class="double">DU9</button>
+<button class="double">DU10</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SU6</button>
+<div class="double-group">
+<button class="double">DU11</button>
+<button class="double">DU12</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SU7</button>
+<div class="double-group">
+<button class="double">DU13</button>
+<button class="double">DU14</button>
+</div>
+</div>
+
+<hr>
+
+<h2 class="deck-title">Lower Deck</h2>
+
+<div class="row">
+<button class="single">SL1</button>
+<div class="double-group">
+<button class="double">DL1</button>
+<button class="double">DL2</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SL2</button>
+<div class="double-group">
+<button class="double">DL3</button>
+<button class="double">DL4</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SL3</button>
+<div class="double-group">
+<button class="double">DL5</button>
+<button class="double">DL6</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SL4</button>
+<div class="double-group">
+<button class="double">DL7</button>
+<button class="double">DL8</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SL5</button>
+<div class="double-group">
+<button class="double">DL9</button>
+<button class="double">DL10</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SL6</button>
+<div class="double-group">
+<button class="double">DL11</button>
+<button class="double">DL12</button>
+</div>
+</div>
+
+<div class="row">
+<button class="single">SL7</button>
+<div class="double-group">
+<button class="double">DL13</button>
+<button class="double">DL14</button>
+</div>
+</div>
+
+</div>
+
+<h3 id="selectedSeats" align="center">
+Selected Berths: None
+</h3>
+<form action="{% url 'passenger' %}" method="GET">
+
+    <input
+        type="hidden"
+        id="selectedSeatsInput"
+        name="seats"
+    >
+
+    <button
+        type="submit"
+        style="
+            display:block;
+            margin:20px auto;
+            padding:12px 25px;
+            background:#2575fc;
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        "
+    >
+        Continue Booking
+    </button>
+    <input
+    type="hidden"
+    id="bookedSeatsData"
+    value="{{ booked_seats|join:',' }}"
+>
+
+<script>
+
+let bookedSeats =
+document.getElementById("bookedSeatsData")
+.value
+.split(",");
+
+document.querySelectorAll(".single,.double")
+.forEach(btn => {
+
+    if(bookedSeats.includes(btn.innerText.trim())){
+
+        btn.style.background = "red";
+        btn.style.color = "white";
+        btn.disabled = true;
+
+    }
+
+});
+
+let berths =
+document.querySelectorAll(
+    ".single,.double"
+);
+
+let selected = [];
+
+berths.forEach(berth => {
+
+    berth.addEventListener("click", () => {
+
+        if(berth.disabled){
+            return;
+        }
+
+        let no = berth.innerText;
+
+        if(selected.includes(no)){
+
+            selected =
+            selected.filter(
+                s => s !== no
+            );
+
+            berth.classList.remove(
+                "selected"
+            );
+
+        }
+        else{
+
+            if(selected.length >= 6){
+
+                alert(
+                    "Maximum 6 berths can be booked."
+                );
+
+                return;
+            }
+
+            selected.push(no);
+
+            berth.classList.add(
+                "selected"
+            );
+
+        }
+
+        document.getElementById(
+            "selectedSeats"
+        ).innerHTML =
+        "Selected Berths: " +
+        (selected.length ?
+        selected.join(", ")
+        : "None");
+
+        document.getElementById(
+            "selectedSeatsInput"
+        ).value =
+        selected.join(",");
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
+
+</form>
+{% endblock %}

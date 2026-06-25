@@ -1,0 +1,111 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Seats</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            text-align:center;
+            background:#f4f6f9;
+        }
+
+        .bus{
+            width:400px;
+            margin:auto;
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .row{
+            display:flex;
+            justify-content:center;
+            gap:15px;
+            margin:10px;
+        }
+
+        .seat{
+            width:50px;
+            height:50px;
+            background:#ddd;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+        .seat.selected{
+            background:green;
+            color:white;
+        }
+
+        .seat.booked{
+            background:red;
+            color:white;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Select Seats</h1>
+
+<div class="bus">
+
+    <div class="row">
+        <button class="seat">A1</button>
+        <button class="seat">A2</button>
+
+        <div style="width:40px;"></div>
+
+        <button class="seat">A3</button>
+        <button class="seat">A4</button>
+    </div>
+
+    <div class="row">
+        <button class="seat">B1</button>
+        <button class="seat">B2</button>
+
+        <div style="width:40px;"></div>
+
+        <button class="seat">B3</button>
+        <button class="seat">B4</button>
+    </div>
+
+    <div class="row">
+        <button class="seat">C1</button>
+        <button class="seat">C2</button>
+
+        <div style="width:40px;"></div>
+
+        <button class="seat">C3</button>
+        <button class="seat">C4</button>
+    </div>
+
+</div>
+
+<script>
+
+let seats=document.querySelectorAll('.seat');
+
+seats.forEach(seat=>{
+
+    seat.addEventListener('click',()=>{
+
+        seat.classList.toggle('selected');
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
+{% endblock %}

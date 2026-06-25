@@ -1,0 +1,175 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<style>
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.page-title{
+    color:#2563eb;
+    margin-bottom:25px;
+}
+
+.login-card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#2563eb;
+    color:white;
+    padding:18px;
+    text-align:left;
+}
+
+td{
+    padding:16px;
+    border-bottom:1px solid #eee;
+}
+
+tr:hover{
+    background:#f8fafc;
+}
+
+.user-badge{
+    background:#e0f2fe;
+    color:#0369a1;
+    padding:6px 12px;
+    border-radius:20px;
+    font-weight:bold;
+    font-size:13px;
+}
+
+.time-badge{
+    background:#dcfce7;
+    color:#166534;
+    padding:6px 12px;
+    border-radius:20px;
+    font-weight:bold;
+    font-size:13px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.stat-box{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.stat-box h1{
+    color:#2563eb;
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+.stat-box p{
+    color:#64748b;
+}
+
+.no-data{
+    text-align:center;
+    padding:40px;
+    color:#64748b;
+}
+
+</style>
+
+<div class="container">
+
+<h1 class="page-title">
+🟢 Login History
+</h1>
+
+<div class="stats">
+
+    <div class="stat-box">
+        <h1>{{ logins|length }}</h1>
+        <p>Total Login Records</p>
+    </div>
+
+</div>
+
+<div class="login-card">
+
+<table>
+
+<tr>
+    <th>👤 User</th>
+    <th>🕒 Login Time</th>
+    <th>🚪 Logout Time</th>
+</tr>
+
+{% for login in logins %}
+
+<tr>
+
+    <td>
+        {{ login.user.username }}
+    </td>
+
+    <td>
+        {{ login.login_time }}
+    </td>
+
+    <td>
+
+        {% if login.logout_time %}
+
+            {{ login.logout_time }}
+
+        {% else %}
+
+            <span style="color:green;font-weight:bold;">
+                Currently Online
+            </span>
+
+        {% endif %}
+
+    </td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="2">
+
+<div class="no-data">
+
+No login history available.
+
+</div>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

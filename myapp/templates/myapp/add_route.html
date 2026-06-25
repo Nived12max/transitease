@@ -1,0 +1,58 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<div style="
+max-width:600px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+">
+
+<h2>
+📍 Add New Route
+</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<input
+type="text"
+name="from_city"
+placeholder="From City"
+required
+style="
+width:100%;
+padding:12px;
+margin-bottom:15px;">
+
+<input
+type="text"
+name="to_city"
+placeholder="To City"
+required
+style="
+width:100%;
+padding:12px;
+margin-bottom:15px;">
+
+<button
+type="submit"
+style="
+background:#16a34a;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;">
+
+Add Route
+
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}
